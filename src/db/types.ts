@@ -40,5 +40,5 @@ export type Monster = {
   images: Images | null;
 };
 export type DB = {
-  Monster: Monster;
+  beasts: Monster;
 };
