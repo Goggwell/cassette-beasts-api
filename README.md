@@ -35,3 +35,41 @@ VALUES
 The table itself needs some refining, and obviously there's a better way of doing this but I've kept it simple for now so that I can actually finish this project.
 
 All the information and assets come from the official [Cassette Beasts Wiki](https://wiki.cassettebeasts.com) so please check it out yourself!
+
+## API Reference
+
+#### Get all monsters
+
+```http
+  GET /api/getMonsters
+```
+
+#### Get monster by ID
+
+```http
+  GET /api/getMonsterById?input=${id}
+```
+
+| Parameter | Type     | Description                 |
+| :-------- | :------- | :-------------------------- |
+| `id`      | `number` | **Required**. ID of monster |
+
+#### Get monster by name
+
+```http
+  GET /api/getMonsterByName?input="${name}"
+```
+
+| Parameter | Type     | Description                   |
+| :-------- | :------- | :---------------------------- |
+| `name`    | `string` | **Required**. Name of monster |
+
+#### Filter monsters by type
+
+```http
+  GET /api/filterMonstersByType?input="${type}"
+```
+
+| Parameter | Type     | Description                         |
+| :-------- | :------- | :---------------------------------- |
+| `type`    | `string` | **Required**. Specific monster type |
