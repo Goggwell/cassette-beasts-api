@@ -2,8 +2,8 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/dist/main.js"
+      "source": "/",
+      "destination": "/src/main.ts"
     }
   ]
 }
