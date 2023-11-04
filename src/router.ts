@@ -23,6 +23,24 @@ export const appRouter = t.router({
         .where("id", "=", input)
         .executeTakeFirstOrThrow();
     }),
+  getMonsterByName: t.procedure
+    .input(z.string())
+    .query(async ({ input, ctx }) => {
+      return await ctx.db
+        .selectFrom("beasts")
+        .selectAll()
+        .where("name", "=", input)
+        .executeTakeFirstOrThrow();
+    }),
+  filterMonstersByType: t.procedure
+    .input(z.string())
+    .query(async ({ input, ctx }) => {
+      return await ctx.db
+        .selectFrom("beasts")
+        .selectAll()
+        .where("type", "=", input)
+        .execute();
+    }),
 });
 
 export type AppRouter = typeof appRouter;
