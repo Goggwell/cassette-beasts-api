@@ -1,11 +1,25 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider     = "prisma-kysely"
+  output       = "../src/db"
+  enumFileName = "enums.ts"
+  fileName     = "types.ts"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Monster {
+  id            Int     @id @default(autoincrement())
+  beastid       String? @db.VarChar
+  name          String?
+  type          String?
+  remaster_from Json?   @db.Json
+  remaster_to   Json?   @db.Json
+  base_stats    Json?   @db.Json
+  description   String?
+  images        Json?   @db.Json
+
+  @@index([beastid])
 }
