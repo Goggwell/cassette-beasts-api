@@ -6,12 +6,12 @@ import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 
 import { appRouter } from "../src/router";
 import { createContext } from "../src/context";
-import { config } from "../src/config/config";
+import { fastifyConfig } from "../src/config/config";
 import { env } from "../src/config/env";
 
 const app = fastify({
   maxParamLength: 5000,
-  logger: config[env.NODE_ENV].logger,
+  logger: fastifyConfig[env.NODE_ENV].logger,
 });
 
 app.register(sensible);
@@ -45,4 +45,9 @@ if (env.HOST) {
 export default async (req: any, res: any) => {
   await app.ready();
   app.server.emit("request", req, res);
+};
+
+export const config = {
+  runtime: "edge",
+  regions: ["cle1"],
 };
