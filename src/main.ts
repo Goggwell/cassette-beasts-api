@@ -36,7 +36,7 @@ server.register(helmet);
 
 server.get("/", (req, res) => res.status(200).send("Hello world!"));
 
-if ("RENDER" in process.env) {
+if ("RENDER" in process.env || env.NODE_ENV === `production`) {
   server.listen({
     port: env.PORT,
     host: `0.0.0.0`,
@@ -44,6 +44,5 @@ if ("RENDER" in process.env) {
 } else {
   server.listen({
     port: env.PORT,
-    host: `0.0.0.0`,
   });
 }
