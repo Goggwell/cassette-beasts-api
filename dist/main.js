@@ -275,13 +275,14 @@ server.register(import_cors.default, {
 });
 server.register(import_helmet.default);
 server.get("/", (req, res) => res.status(200).send("Hello world!"));
-if (env.HOST) {
+if ("RENDER" in process.env) {
   server.listen({
     port: env.PORT,
-    host: env.HOST
+    host: `0.0.0.0`
   });
 } else {
   server.listen({
-    port: env.PORT
+    port: env.PORT,
+    host: env.HOST
   });
 }

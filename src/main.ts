@@ -36,13 +36,14 @@ server.register(helmet);
 
 server.get("/", (req, res) => res.status(200).send("Hello world!"));
 
-if (env.HOST) {
+if ("RENDER" in process.env) {
   server.listen({
     port: env.PORT,
-    host: env.HOST,
+    host: `0.0.0.0`,
   });
 } else {
   server.listen({
     port: env.PORT,
+    host: env.HOST,
   });
 }
