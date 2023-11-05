@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "dotenv -e .env -- tsx watch src/main.ts",
     "build": "tsup src",
+    "build:render": "pnpm i && tsup src",
     "lint": "rome check src --apply",
     "format": "rome format src --write",
     "start": "dotenv -e .env -- node ./dist/main.js",
