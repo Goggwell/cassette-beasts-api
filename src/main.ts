@@ -44,6 +44,6 @@ if ("RENDER" in process.env) {
 } else {
   server.listen({
     port: env.PORT,
-    host: env.HOST,
+    host: `0.0.0.0`,
   });
 }
