@@ -8,6 +8,7 @@ export type SimplifiedMonster = {
   id: string | null;
   name: string | null;
   image: string | null;
+  requirement: string | null;
 };
 
 export type RemasteredMonster = {
