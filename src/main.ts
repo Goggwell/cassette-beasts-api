@@ -3,6 +3,7 @@ import sensible from "@fastify/sensible";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import fastifyHealthcheck from "fastify-healthcheck";
+import fastifyFavicon from "fastify-favicon";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 
 import { appRouter } from "./router";
@@ -33,6 +34,8 @@ server.register(cors, {
 });
 
 server.register(helmet);
+
+server.register(fastifyFavicon);
 
 server.get("/", (req, res) => res.status(200).send("Hello world!"));
 

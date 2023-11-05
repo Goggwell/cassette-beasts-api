@@ -32,6 +32,9 @@ dependencies:
   fastify:
     specifier: ^4.24.3
     version: 4.24.3
+  fastify-favicon:
+    specifier: ^4.3.0
+    version: 4.3.0
   fastify-healthcheck:
     specifier: ^4.4.0
     version: 4.4.0
@@ -1759,6 +1762,13 @@ packages:
 
   /fast-uri@2.3.0:
     resolution: {integrity: sha512-eel5UKGn369gGEWOqBShmFJWfq/xSJvsgDzgLYC845GneayWvXBf0lJCBn5qTABfewy1ZDPoaR5OZCP+kssfuw==}
+    dev: false
+
+  /fastify-favicon@4.3.0:
+    resolution: {integrity: sha512-EDJ7oYTvJs7bfyU7WKVw8PGoVuwWXIsyJr2woVS2K3kNii2AWd2svppJCsPnV8ZwuyxRfwt4KNgJQjo6kOut4w==}
+    engines: {node: '>=14.15.0'}
+    dependencies:
+      fastify-plugin: 4.5.1
     dev: false
 
   /fastify-healthcheck@4.4.0:
