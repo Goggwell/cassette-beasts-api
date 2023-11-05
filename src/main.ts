@@ -6,14 +6,14 @@ import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 
 import { appRouter } from "./router";
 import { createContext } from "./context";
-import { fastifyConfig } from "./config/config";
+import { config } from "./config/config";
 import { env } from "./config/env";
 
 (async () => {
   try {
     const server = await fastify({
       maxParamLength: 5000,
-      logger: fastifyConfig[env.NODE_ENV].logger,
+      logger: config[env.NODE_ENV].logger,
     });
 
     await server.register(sensible);

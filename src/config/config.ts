@@ -4,7 +4,7 @@ type Config = {
   logger: FastifyServerOptions["logger"];
 };
 
-export const fastifyConfig: Record<string, Config> = {
+export const config: Record<string, Config> = {
   development: {
     logger: {
       transport: {
