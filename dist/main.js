@@ -256,38 +256,32 @@ var envSchema = import_zod2.z.object({
 var env = envSchema.parse(process.env);
 
 // src/main.ts
-(async () => {
-  try {
-    const server = await (0, import_fastify.default)({
-      maxParamLength: 5e3,
-      logger: config[env.NODE_ENV].logger
-    });
-    await server.register(import_sensible.default);
-    await server.register(import_fastify_healthcheck.default);
-    await server.register(import_fastify2.fastifyTRPCPlugin, {
-      prefix: "/api",
-      trpcOptions: {
-        router: appRouter,
-        createContext
-      }
-    });
-    await server.register(import_cors.default, {
-      origin: "*",
-      credentials: true
-    });
-    await server.register(import_helmet.default);
-    if (env.HOST) {
-      await server.listen({
-        port: env.PORT,
-        host: env.HOST
-      });
-    } else {
-      await server.listen({
-        port: env.PORT
-      });
-    }
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
+var server = (0, import_fastify.default)({
+  maxParamLength: 5e3,
+  logger: config[env.NODE_ENV].logger
+});
+server.register(import_sensible.default);
+server.register(import_fastify_healthcheck.default);
+server.register(import_fastify2.fastifyTRPCPlugin, {
+  prefix: "/api",
+  trpcOptions: {
+    router: appRouter,
+    createContext
   }
-})();
+});
+server.register(import_cors.default, {
+  origin: "*",
+  credentials: true
+});
+server.register(import_helmet.default);
+server.get("/", (req, res) => res.status(200).send("Hello world!"));
+if (env.HOST) {
+  server.listen({
+    port: env.PORT,
+    host: env.HOST
+  });
+} else {
+  server.listen({
+    port: env.PORT
+  });
+}

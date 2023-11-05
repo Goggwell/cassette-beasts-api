@@ -10,44 +10,39 @@ import { createContext } from "./context";
 import { config } from "./config/config";
 import { env } from "./config/env";
 
-(async () => {
-  try {
-    const server = await fastify({
-      maxParamLength: 5000,
-      logger: config[env.NODE_ENV].logger,
-    });
+const server = fastify({
+  maxParamLength: 5000,
+  logger: config[env.NODE_ENV].logger,
+});
 
-    await server.register(sensible);
+server.register(sensible);
 
-    await server.register(fastifyHealthcheck);
+server.register(fastifyHealthcheck);
 
-    await server.register(fastifyTRPCPlugin, {
-      prefix: "/api",
-      trpcOptions: {
-        router: appRouter,
-        createContext,
-      },
-    });
+server.register(fastifyTRPCPlugin, {
+  prefix: "/api",
+  trpcOptions: {
+    router: appRouter,
+    createContext,
+  },
+});
 
-    await server.register(cors, {
-      origin: "*",
-      credentials: true,
-    });
+server.register(cors, {
+  origin: "*",
+  credentials: true,
+});
 
-    await server.register(helmet);
+server.register(helmet);
 
-    if (env.HOST) {
-      await server.listen({
-        port: env.PORT,
-        host: env.HOST,
-      });
-    } else {
-      await server.listen({
-        port: env.PORT,
-      });
-    }
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
-})();
+server.get("/", (req, res) => res.status(200).send("Hello world!"));
+
+if (env.HOST) {
+  server.listen({
+    port: env.PORT,
+    host: env.HOST,
+  });
+} else {
+  server.listen({
+    port: env.PORT,
+  });
+}
