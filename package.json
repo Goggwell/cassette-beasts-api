@@ -34,6 +34,7 @@
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.3.0",
     "fastify": "^4.24.3",
+    "fastify-healthcheck": "^4.4.0",
     "kysely": "^0.26.3",
     "prisma-kysely": "^1.7.1",
     "ws": "^8.14.2",

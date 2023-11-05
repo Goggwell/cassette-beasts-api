@@ -45,6 +45,7 @@ var import_fastify = __toESM(require("fastify"));
 var import_sensible = __toESM(require("@fastify/sensible"));
 var import_cors = __toESM(require("@fastify/cors"));
 var import_helmet = __toESM(require("@fastify/helmet"));
+var import_fastify_healthcheck = __toESM(require("fastify-healthcheck"));
 var import_fastify2 = require("@trpc/server/adapters/fastify");
 
 // src/router.ts
@@ -262,6 +263,7 @@ var env = envSchema.parse(process.env);
       logger: config[env.NODE_ENV].logger
     });
     await server.register(import_sensible.default);
+    await server.register(import_fastify_healthcheck.default);
     await server.register(import_fastify2.fastifyTRPCPlugin, {
       prefix: "/api",
       trpcOptions: {

@@ -2,6 +2,7 @@ import fastify from "fastify";
 import sensible from "@fastify/sensible";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
+import fastifyHealthcheck from "fastify-healthcheck";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 
 import { appRouter } from "./router";
@@ -17,6 +18,8 @@ import { env } from "./config/env";
     });
 
     await server.register(sensible);
+
+    await server.register(fastifyHealthcheck);
 
     await server.register(fastifyTRPCPlugin, {
       prefix: "/api",
