@@ -23,10 +23,6 @@ const server = fastify({
   logger: config[env.NODE_ENV].logger,
 });
 
-server.register(sensible);
-
-server.register(fastifyHealthcheck);
-
 server.register(fastifyTRPCPlugin, {
   prefix: "/api",
   trpcOptions: {
@@ -50,16 +46,24 @@ server.register(fastifyTRPCPlugin, {
   },
 });
 
+// custom fastify plugins
+server.register(helmet);
+server.register(sensible);
+server.register(fastifyFavicon);
+server.register(fastifyHealthcheck);
+
 server.register(cors, {
   origin: "*",
   credentials: true,
 });
 
-server.register(helmet);
-
-server.register(fastifyFavicon);
-
-server.get("/", (req, res) => res.status(200).send("Hello world!"));
+// default endpoints, just so they don't return 404
+server.get("/", (req, res) =>
+  res.status(200).send("Try querying for monsters! --> /api/getMonsters")
+);
+server.get("/api", (req, res) =>
+  res.status(200).send("Try querying for monsters! --> /api/getMonsters")
+);
 
 if ("RENDER" in process.env || env.NODE_ENV === `production`) {
   server.listen({

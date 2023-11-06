@@ -269,8 +269,6 @@ var server = (0, import_fastify.default)({
   maxParamLength: 5e3,
   logger: config[env.NODE_ENV].logger
 });
-server.register(import_sensible.default);
-server.register(import_fastify_healthcheck.default);
 server.register(import_fastify2.fastifyTRPCPlugin, {
   prefix: "/api",
   trpcOptions: {
@@ -291,13 +289,22 @@ server.register(import_fastify2.fastifyTRPCPlugin, {
     }
   }
 });
+server.register(import_helmet.default);
+server.register(import_sensible.default);
+server.register(import_fastify_favicon.default);
+server.register(import_fastify_healthcheck.default);
 server.register(import_cors.default, {
   origin: "*",
   credentials: true
 });
-server.register(import_helmet.default);
-server.register(import_fastify_favicon.default);
-server.get("/", (req, res) => res.status(200).send("Hello world!"));
+server.get(
+  "/",
+  (req, res) => res.status(200).send("Try querying for monsters! --> /api/getMonsters")
+);
+server.get(
+  "/api",
+  (req, res) => res.status(200).send("Try querying for monsters! --> /api/getMonsters")
+);
 if ("RENDER" in process.env || env.NODE_ENV === `production`) {
   server.listen({
     port: env.PORT,
