@@ -5,11 +5,18 @@ import helmet from "@fastify/helmet";
 import fastifyHealthcheck from "fastify-healthcheck";
 import fastifyFavicon from "fastify-favicon";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
+import { ProcedureType, TRPCError } from "@trpc/server";
 
 import { appRouter } from "./router";
 import { createContext } from "./context";
 import { config } from "./config/config";
 import { env } from "./config/env";
+
+interface IResponseMetaOpts {
+  ctx?: any;
+  errors: TRPCError[];
+  type: ProcedureType | "unknown";
+}
 
 const server = fastify({
   maxParamLength: 5000,
@@ -25,6 +32,21 @@ server.register(fastifyTRPCPlugin, {
   trpcOptions: {
     router: appRouter,
     createContext,
+    responseMeta: (opts: IResponseMetaOpts) => {
+      const { ctx, errors, type } = opts;
+
+      const allOk = errors.length === 0;
+      const isQuery = type === "query";
+
+      if (ctx?.res && allOk && isQuery) {
+        return {
+          headers: {
+            "cache-control": `s-maxage=300, stale-while-revalidate=60, stale-if-error=86400`,
+          },
+        };
+      }
+      return {};
+    },
   },
 });
 

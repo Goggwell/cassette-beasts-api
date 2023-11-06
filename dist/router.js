@@ -35,6 +35,14 @@ var appRouter = t.router({
   getMonsters: t.procedure.query(async ({ ctx }) => {
     return await ctx.db.selectFrom("beasts").selectAll().execute();
   }),
+  getMonstersOffset: t.procedure.input(
+    import_zod.z.object({
+      limit: import_zod.z.number(),
+      offset: import_zod.z.number()
+    })
+  ).query(async ({ input, ctx }) => {
+    return await ctx.db.selectFrom("beasts").selectAll().limit(input.limit).offset(input.offset).execute();
+  }),
   getMonsterById: t.procedure.input(import_zod.z.number()).query(async ({ input, ctx }) => {
     return await ctx.db.selectFrom("beasts").selectAll().where("id", "=", input).executeTakeFirstOrThrow();
   }),

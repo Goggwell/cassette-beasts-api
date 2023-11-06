@@ -46,6 +46,7 @@ var import_sensible = __toESM(require("@fastify/sensible"));
 var import_cors = __toESM(require("@fastify/cors"));
 var import_helmet = __toESM(require("@fastify/helmet"));
 var import_fastify_healthcheck = __toESM(require("fastify-healthcheck"));
+var import_fastify_favicon = __toESM(require("fastify-favicon"));
 var import_fastify2 = require("@trpc/server/adapters/fastify");
 
 // src/router.ts
@@ -59,6 +60,14 @@ var t = import_server.initTRPC.context().create({
 var appRouter = t.router({
   getMonsters: t.procedure.query(async ({ ctx }) => {
     return await ctx.db.selectFrom("beasts").selectAll().execute();
+  }),
+  getMonstersOffset: t.procedure.input(
+    import_zod.z.object({
+      limit: import_zod.z.number(),
+      offset: import_zod.z.number()
+    })
+  ).query(async ({ input, ctx }) => {
+    return await ctx.db.selectFrom("beasts").selectAll().limit(input.limit).offset(input.offset).execute();
   }),
   getMonsterById: t.procedure.input(import_zod.z.number()).query(async ({ input, ctx }) => {
     return await ctx.db.selectFrom("beasts").selectAll().where("id", "=", input).executeTakeFirstOrThrow();
@@ -266,7 +275,20 @@ server.register(import_fastify2.fastifyTRPCPlugin, {
   prefix: "/api",
   trpcOptions: {
     router: appRouter,
-    createContext
+    createContext,
+    responseMeta: (opts) => {
+      const { ctx, errors, type } = opts;
+      const allOk = errors.length === 0;
+      const isQuery = type === "query";
+      if (ctx?.res && allOk && isQuery) {
+        return {
+          headers: {
+            "cache-control": `s-maxage=300, stale-while-revalidate=60, stale-if-error=86400`
+          }
+        };
+      }
+      return {};
+    }
   }
 });
 server.register(import_cors.default, {
@@ -274,6 +296,7 @@ server.register(import_cors.default, {
   credentials: true
 });
 server.register(import_helmet.default);
+server.register(import_fastify_favicon.default);
 server.get("/", (req, res) => res.status(200).send("Hello world!"));
 if ("RENDER" in process.env || env.NODE_ENV === `production`) {
   server.listen({
