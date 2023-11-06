@@ -1,4 +1,4 @@
-# Acme Corp
+# Cassette Beasts API
 
 > **Warning**
 > This API and the data behind it are a work-in-progress.
@@ -43,6 +43,17 @@ All the information and assets come from the official [Cassette Beasts Wiki](htt
 ```http
   GET /api/getMonsters
 ```
+
+#### Get paginated list of monsters
+
+```http
+  GET /api/getMonstersOffset?input={"limit":${limit},"offset":${offset}}
+```
+
+| Parameter | Type     | Description                                                                                            |
+| :-------- | :------- | :----------------------------------------------------------------------------------------------------- |
+| `limit`   | `number` | **Required**. Amount of monsters returned                                                              |
+| `offset`  | `number` | **Required**. Starting location of data (move to 'next page' by making 'offset' a multiple of 'limit') |
 
 #### Get monster by ID
 
